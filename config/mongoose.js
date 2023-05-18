@@ -1,13 +1,13 @@
-const mongoose=require('mongoose');
+const mongoose=require("mongoose");
 
-mongoose.connect('mongodb://0.0.0.0/codeial_development');
+mongoose.connect('mongodb://0.0.0.0:27017/Manual_Authenction')
 
 const db=mongoose.connection;
 
-db.on('errpr',console.error.bind(console,"Error connecting to mongodb"));
+db.on('error',console.error.bind(console,"Error connecting to MongoDB"));
 
 db.once('open',function(){
-    console.log('Connected to Database::MongoDB')
+    console.log("Connected to database Mongodb");
 })
 
 module.exports=db;

@@ -1,15 +1,40 @@
+
 <html>
-    <head>
-        <title>
-            <%= title %>
-        </title>
-        <link rel="stylesheet" href="/css/layout.css">
-        <%- style %>
-    </head>
-    <body>
-        <%- include('_header'); %>
+
+<head>
+    <title>
+        <%= title%>
+    </title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+<!--     
+// Setting Up Static Files Access
+
+// static Files for pages -->
+<%- style %>
+  
+</head>
+
+<body>
+    <!-- here _header.ejs file extract -->
+    <%- include('_header');%>
+        <!--body:- predifine liburary here extract all profile and hone  -->
+        
+        <main id="layout-main">
         <%- body %>
-        <%- include('_footer'); %>
-        <%- script %>
-    </body>
+         </main>
+            <!-- here _footer.ejs file extract -->
+
+          
+        
+
+            
+<!-- // Setting Up Static Files Access
+
+// static Files for pages -->
+
+
+</body>
+
 </html>
