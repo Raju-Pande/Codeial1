@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { post } = require('../../Codeial/routes');
+
 
 const postSchema = new mongoose.Schema({
     content: {
