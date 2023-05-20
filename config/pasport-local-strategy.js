@@ -3,14 +3,15 @@ const passport = require("passport");
 
 const LocalStrategy = require("passport-local").Strategy;
 
-const User = require("../../Codeial/models/user");
+const User = require("../models/user");
 
 // Authentication using passport
 passport.use(new LocalStrategy({
 
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback:true
 },
-    function (email, password, done) {
+    function ( email, password, done) {
         // Find a user and estalish the identity
         User.findOne({ email: email })
             .then((user) => {
@@ -27,11 +28,6 @@ passport.use(new LocalStrategy({
             })
     }
 ))
-
-
-
-
-
 
 
 // Serializing the user to decide which key is to be kept in the cookies
