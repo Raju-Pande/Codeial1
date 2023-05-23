@@ -19,27 +19,40 @@ const Post = require('../models/post');
 
 
 // async
-
 module.exports.create = async function (req, res) {
     try {
-        let post = await Post.findById(req.body.post)
-        if (post) {
-            let comment = await Comment.create({
-                content: req.body.content,
-                post: req.body.post,
-                user: req.user._id,
-            });
-            post.comments.push(comment);
-            post.save();
-
-            res.redirect('/');
+        const post = await Post.findById(req.body.post);
+        if (!post) {
+            throw new Error('Post not found');
         }
 
-    } catch {
-        console.log('Error', err);
+        const comment = await Comment.create({
+            content: req.body.content,
+            post: req.body.post,
+            user: req.user._id,
+        });
+
+        post.comments.push(comment);
+        await post.save();
+
+        if (req.xhr) {
+            // Similar for comments to fetch the user's id!
+            return res.status(200).json({
+                data: {
+                    comment: comment,
+                },
+                message: 'Comment created!',
+            });
+        }
+
+        req.flash('success', 'Comment published!');
+        res.redirect('back');
+    } catch (err) {
+        req.flash('error', err.message);
         return;
     }
-}
+};
+
 
 
 
@@ -70,24 +83,35 @@ module.exports.create = async function (req, res) {
 
 
 // Async
-
 module.exports.destroy = async function (req, res) {
     try {
-        let comment = await Comment.findById(req.params.id)
-        if (comment.user == req.user.id) {
-            let postId = comment.post;
-            comment.deleteOne();
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) {
+            throw new Error('Comment not found');
+        }
 
-            let post = await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } })
-
-            return res.redirect('back');
-        } else {
+        if (comment.user.toString() !== req.user.id) {
+            req.flash('error', 'Unauthorized');
             return res.redirect('back');
         }
 
+        const postId = comment.post;
+        await comment.deleteOne();
+        await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } });
+
+        if (req.xhr) {
+            return res.status(200).json({
+                data: {
+                    comment_id: req.params.id,
+                },
+                message: 'Comment deleted',
+            });
+        }
+
+        req.flash('success', 'Comment deleted!');
+        res.redirect('back');
     } catch (err) {
-        console.log('Error', err);
+        req.flash('error', err.message);
+        return;
     }
-}
-
-
+};

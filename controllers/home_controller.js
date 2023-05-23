@@ -54,7 +54,11 @@ const User = require("../models/user");
 module.exports.home = async function (req, res) {
 
     try {
+        // populate the user of each post
         let posts = await Post.find({})
+            // letest post first showing Ajax
+            .sort('-createdAt')
+
             .populate('user')
             // showing comment on home
             .populate({
@@ -72,7 +76,7 @@ module.exports.home = async function (req, res) {
         });
 
     } catch (err) {
-        console.log('Error',err);
+        console.log('Error', err);
         return;
     }
 }

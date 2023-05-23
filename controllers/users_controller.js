@@ -28,6 +28,7 @@ module.exports.profile = function(req, res){
         if(req.user.id == req.params.id){
             User.findByIdAndUpdate(req.params.id, req.body)
             .then((user)=>{
+                req.flash('success','Profile Updated!');
                 return res.redirect('back');
             });
         }else{
@@ -109,8 +110,10 @@ module.exports.createSession = function (req, res) {
 module.exports.destroySession=function(req,res){
    
         req.logout(req.user, err => {
-            req.flash('success','Logged Out Successfully')
-          if(err) return next(err);
+          if(err){
+           return next(err);
+          }
+          req.flash('success','You Have Logged Out!');
           res.redirect("/");
         });
     
