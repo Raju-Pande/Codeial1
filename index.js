@@ -9,7 +9,6 @@ const port = 8000;
 
 // mpngpDb Conneected
 
-const mongoose = require("mongoose");
 const db = require('./config/mongoose')
 
 // Used for session cookie
@@ -41,6 +40,9 @@ app.use(cookieParser());
 
 // static file
 app.use(express.static('./assets'))
+
+// make the uploads path available to the browser
+app.use('/uploads',express.static(__dirname+'/uploads'));
 
 // Creating a Layout
 const expressLayouts=require('express-ejs-layouts');

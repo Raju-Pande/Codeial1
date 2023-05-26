@@ -15,9 +15,10 @@
                     $('#posts-list-container>ul').prepend(newPost);
                     deletePost($(' .delete-post-button', newPost));
 
+              
                     // call the create comment class
-                    // new PostComments(data.data.post._id);
-                    console.log("noty");
+                    new PostComments(data.data.post._id);
+                    
                     new Noty({
                         theme: 'relax',
                         text: "Post published!",
@@ -26,7 +27,7 @@
                         timeout: 1500
                         
                     }).show();
-
+                   
                 }, error: function(error){
                     console.log(error.responseText);
                 }
@@ -109,7 +110,7 @@
 
             // get the post's id by splitting the id attribute
             let postId = self.prop('id').split("-")[1]
-            new PostComments(postId);
+            // new PostComments(postId);
         });
     }
 
