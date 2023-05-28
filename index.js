@@ -14,7 +14,10 @@ const db = require('./config/mongoose')
 // Used for session cookie
 const session = require('express-session');
 const passport = require('passport');
-const passportLocal = require('./config/pasport-local-strategy')
+const passportLocal = require('./config/pasport-local-strategy');
+
+// passport JWT
+const passportJWT =require('./config/passport-jwt-strategy')
 
 // connection to monodb
 const MongoStore =require("connect-mongo");
