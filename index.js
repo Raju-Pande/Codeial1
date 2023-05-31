@@ -11,13 +11,23 @@ const port = 8000;
 
 const db = require('./config/mongoose')
 
+
+const mongoose=require('mongoose');
+
+
+// dotenv
+// const dotenv=require('dotenv');
+
 // Used for session cookie
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/pasport-local-strategy');
 
 // passport JWT
-const passportJWT =require('./config/passport-jwt-strategy')
+const passportJWT =require('./config/passport-jwt-strategy');
+
+// Google auth
+const passportGoogle=require('./config/passport-google-oauth2-strategy');
 
 // connection to monodb
 const MongoStore =require("connect-mongo");
