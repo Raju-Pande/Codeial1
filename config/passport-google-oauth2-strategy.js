@@ -26,7 +26,7 @@ passport.use(
                 //finding user
                 const user = await User.findOne({
                     email: profile.emails[0].value,
-                }).exec();
+                });
                 console.log(accessToken, refreshToken);
                 console.log(profile);
                 if (user) {
