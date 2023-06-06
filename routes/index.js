@@ -23,6 +23,10 @@ router.use('/posts',require('./post'))
 
 router.use('/comments',require('./comments'))
 
+// like
+router.use('/likes',require('./likes'))
+// home_controller.js
+
 // api
 router.use('/api',require('./api'));
 

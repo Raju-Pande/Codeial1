@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment')
+const Like = require("../models/like");
 
 // promises
 
@@ -92,8 +93,17 @@ module.exports.destroy = async function (req, res) {
         const post = await Post.findById(req.params.id);
 
         if (post.user == req.user.id) {
+
+            // change :: delete the associated likes for the post and all its comments' likes too
+            await Like.deleteMany({ likeable: post, onModel: 'Post' });
+            await Like.deleteMany({ _id: { $in: post.comments } })
+
+            //    got to comments_controller.js
+
+
             await post.deleteOne();
-            await Comment.deleteMany({ post: req.params.id });
+            //delete the comment also
+            const commentD = await Comment.deleteMany({ post: req.params.id });
 
             if (req.xhr) {
                 return res.status(200).json({
@@ -103,14 +113,19 @@ module.exports.destroy = async function (req, res) {
                     message: "Post deleted"
                 });
             }
-
-            req.flash('success', 'Post and associated comments deleted');
+            if (commentD) {
+                //if deleted
+                // req.flash("success", `Post and associated comments deleted! `);
+                return res.redirect("back");
+            }
         } else {
+            //if not match
             req.flash('error', 'You cannot delete this post!');
+            return res.redirect("back");
         }
     } catch (err) {
-        req.flash('error', err);
+        // console.log(err);
+        req.flash("error", `check the error ${err} `);
+        return res.redirect("back");
     }
-
-    return res.redirect('back');
 };

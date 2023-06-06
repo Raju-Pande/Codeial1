@@ -11,11 +11,21 @@ const postSchema = new mongoose.Schema({
         ref: 'User'
     },
     // inculde the array of ids of all comments in this post itself
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
-    }
-]
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ],
+
+    // like 
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like'
+        }
+    ],
+    // go to the inside of models "comment.js"
 },
     {
         timestamps: true // created at and updated at here use
@@ -25,3 +35,4 @@ const postSchema = new mongoose.Schema({
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
+

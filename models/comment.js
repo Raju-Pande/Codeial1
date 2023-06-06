@@ -10,13 +10,21 @@ const commentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true
+       
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
-        require: true
-    }
+        
+    },
+    // like
+    likes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Like'
+        }
+    ]
+    // got ot the inside controller likes_controller.js
 }, {
     timestamps: true
 })
