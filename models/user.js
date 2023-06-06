@@ -19,8 +19,18 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String
+    },
+    friendships: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "FriendShip",
+        },
+    ],
+},
+    {
+        timestamps: true
     }
-}, { timestamps: true });
+);
 
 
 let storage = multer.diskStorage({
