@@ -1,3 +1,5 @@
+// 1st freindship
+
 const mongoose = require("mongoose");
 
 const friendshipSchema = new mongoose.Schema(
@@ -22,3 +24,5 @@ const friendshipSchema = new mongoose.Schema(
 
 const FriendShip = mongoose.model('Friendship',friendshipSchema);
 module.exports = FriendShip;
+
+// FriendShip --> user.js

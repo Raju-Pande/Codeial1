@@ -1,6 +1,10 @@
 <li id="post-<%= post._id%>">
     <p>
+         <!-- if user is singIn and the who created the 
+        post is equal to the who created the post -->
         <% if (locals.user && locals.user.id==post.user.id){ %>
+          <!-- then we able to delete the post form the homeScreen -->
+          
             <small>
                 <a class="delete-post-button" href="/posts/destroy/<%= post.id %>">X</a>
             </small>
@@ -25,6 +29,8 @@
                     </small>
                     <!-- got to the comment.ejs -->
     </p>
+    <!-- i will display comment here and only those people who signIn   -->
+    
     <div class="post-comments">
         <% if (locals.user){ %>
             <form action="/comments/create" id="post-<%= post._id %>-comment-form" method="POST">
@@ -39,6 +45,8 @@
                     <ul id="post-comments-<%= post._id %>">
                         <% for (comment of post.comments){%>
                             <!-- _comment.ejs  -->
+                            <!-- <%/* here is the delete activity of the comments written */%> -->
+                    
                             <%- include('_comment') -%>
 
                                 <%} %>

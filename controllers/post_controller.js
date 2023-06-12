@@ -1,5 +1,9 @@
+//need postSchema to create post
+//fetch the postSchema
 const Post = require('../models/post');
-const Comment = require('../models/comment')
+//importing the comment for deleting
+const Comment = require('../models/comment');
+//import the like
 const Like = require("../models/like");
 
 // promises
@@ -26,13 +30,16 @@ const Like = require("../models/like");
 
 
 // By using async await
+//we are just making views update by just putting the data information fetch by schemaPost
 module.exports.create = async function (req, res) {
     try {
         let post = await Post.create({
+            //taken the details form the post schema
             content: req.body.content,
             user: req.user._id
         });
-
+//need to check the ajax request
+		//set the data to..
         if (req.xhr) {
             // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
             post = await Post.findById(post._id).populate('user');
@@ -87,9 +94,11 @@ module.exports.create = async function (req, res) {
 
 
 // Async
+//now need to delete the post and comment to which is associated with the post
 
 module.exports.destroy = async function (req, res) {
     try {
+        //before deleting we need to check is it present in dB or not
         const post = await Post.findById(req.params.id);
 
         if (post.user == req.user.id) {

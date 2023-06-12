@@ -6,14 +6,16 @@ const crypto = require('crypto');
 
 const User = require('../models/user')
 
+const env =require('./environment');
+
 // tell passport to use a new strategy for google log in
 passport.use(
 	new googleStrategy(
 		{
 			//we pass options
-			clientID: "364941021041-q175n3cofq9bhr78audcrnhp3vn5oekl.apps.googleusercontent.com" ,
-			clientSecret: "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" ,
-			callbackURL: "http://localhost:8000/user/auth/google/callback"
+			clientID:env.google_client_id ,
+			clientSecret: env.google_client_secret,
+			callbackURL: env.google_call_back_URL
 		},
         //accessToken create by google 
         // like jwt header

@@ -1,6 +1,9 @@
 const mongoose=require("mongoose");
 
-mongoose.connect('mongodb://0.0.0.0:27017/Manual_Authenction')
+const env=require('./environment');
+
+mongoose.connect(`mongodb://0.0.0.0:27017/${env.db}`)
+// mongoose.connect('mongodb://localhost:27017/Manual_Authenction')
 
 const db=mongoose.connection;
 

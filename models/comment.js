@@ -6,13 +6,15 @@ const commentSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    // comment belongs to a user
+    // comment belongs to a user through populating
+		//user Schema
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
        
     },
     post: {
+        			//fetching form the postSchema
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
         

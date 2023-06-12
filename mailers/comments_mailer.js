@@ -30,22 +30,28 @@
 
 
 
-
+//import the nodemailer
 const nodemailer = require("../config/nodemailer");
-
+//need to create a function that send mail
+//this is another way of exporting
 exports.newComment = async (comment) => {
+  // console.log(`inside the newComment mailer`, comment);
+
+	//define mailer Template
   try {
     const htmlString = await nodemailer.renderTemplate({ comment }, "/comments/new_comment.ejs");
-
+//need to send the email
     await nodemailer.transporter.sendMail({
       from: "rpande400@gmail.com",
       to: comment.user.email,
       subject: "New Comment Published!",
+      	// html: "<h1>yes,you done it...comment now publish!</h1>",
       html: htmlString,
     });
 
     console.log("Message sent successfully");
   } catch (error) {
+    //info carry the information about the request that has been send
     console.log("Error in sending mail", error);
   }
 };

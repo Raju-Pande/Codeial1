@@ -114,6 +114,8 @@ module.exports.profile = async function (req, res) {
 
 try {
     // for update the data
+    //now we create a controller so that u can
+//update you name and email of the sign in profile...
     module.exports.update = async function (req, res) {
         console.log("***************", req.body)
         //   if (req.user.id == req.params.id) {
@@ -138,9 +140,11 @@ try {
                 user.email = req.body.email;
 
                 if (req.file) {
-
+//check if user already have the avatar with then or not
+					//if present then i remove avatar and uploaded a new one
                     if (user.avatar) {
-
+//true then delete the avatar
+						//for deleting we need fs and path modules
                         fs.unlinkSync(path.join(__dirname, '..', user.avatar))
 
                     }
@@ -173,8 +177,10 @@ catch (err) {
 
 
 //render the sign up page
+//for the render from backend we fetching
+//the data from the view file through the ejs
 module.exports.signUp = function (req, res) {
-
+// if they already signUP so go to profile page
     if (req.isAuthenticated()) {
         return res.redirect('/user/profile');
     }
@@ -188,7 +194,7 @@ module.exports.signUp = function (req, res) {
 
 //render thr sign in page
 module.exports.signIn = function (req, res) {
-
+// if they already sign in so go to profile page
     if (req.isAuthenticated()) {
         return res.redirect('/user/profile');
     }
@@ -201,12 +207,15 @@ module.exports.signIn = function (req, res) {
 //get the sign up data
 module.exports.create = async function (req, res) {
     try {
+        //sign up page
+        // 1. Check if password and confirmPassword are equal
         if (req.body.password != req.body.confirm_password) {
             return res.redirect('back');
         }
-
+// 2. Check if the user already exists
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
+            // 3. Create the user
             await User.create(req.body);
         }
 
@@ -218,7 +227,8 @@ module.exports.create = async function (req, res) {
 };
 
 // sign in and create a session for the user
-
+//now we well deal with create-session playing with signUp data
+//sign in and create a session for the user
 module.exports.createSession = function (req, res) {
     req.flash('success', 'Logged in Successfully')
     return res.redirect('/');
@@ -228,7 +238,7 @@ module.exports.createSession = function (req, res) {
 // signout
 
 module.exports.destroySession = function (req, res) {
-
+// before redirecting we need to signOut
     req.logout(req.user, err => {
         if (err) {
             return next(err);

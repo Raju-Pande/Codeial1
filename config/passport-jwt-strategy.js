@@ -1,28 +1,39 @@
+//working with  passport then need to require passportJs
 const passport = require("passport");
-const JWTStrategy = require('passport-jwt').Strategy;
+//setting Strategy of the passportJWT
+const jwtStrategy= require('passport-jwt').Strategy;
+//a modules which help extract jwt from the header
 const ExtractJWT = require('passport-jwt').ExtractJwt;
-
+//now need to fetch or UserSchema //taken userSchema
 const User = require('../models/user');
 
+const env = require('./environment');
+// let make a details setting..
+// header is list of keys inside....
+// authentication this also have lot of keys
+// this keys know as Bearer which store token
 let opts = {
-    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'codeial'
-}
-passport.use(new JWTStrategy(opts, function (jwtPayLoad, done) {
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),//making token
+    secretOrKey: env.jwt_secret_key
+};
+passport.use(new jwtStrategy(opts, async function (jwtPayload, done) {
+	//find the user information base on the jwtPayload
+	//we store all details in the jwtPayloads in encrypted form
+	try {
+			const user = await User.findById(jwtPayload._id)
+			if (user) {
+				//user found
+				return done(null, user);
+			} else {
+				//user not found
+				return done(null, false);
+			}
+		} catch (err) {
+			//getting error
+			console.log(err);
+			return done(err, false);
+		}
+	})
+);
 
-    User.findById(jwtPayLoad._id)
-        .catch((err) => {
-            console.log('Error in finding user from JWT');
-            return;
-        })
-        .then((user) => {
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-
-        })
-}))
-
-module.exports=passport;
+module.exports = passport;

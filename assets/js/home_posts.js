@@ -2,17 +2,24 @@
     // method to submit the form data for new post using AJAX
     let createPost = function(){
         let newPostForm = $('#new-post-form');
-
+        // The submit event triggers when the form is submitted, it is usually used to
+		// validate the form before sending it to the server or to abort the submission
+		// and process it in JavaScript.
         newPostForm.submit(function(e){
             e.preventDefault();
 
+            //we post manually through the ajax request...
             $.ajax({
                 type: 'post',
                 url: '/posts/create',
+                //this convert the form data in json
                 data: newPostForm.serialize(),
                 success: function(data){
+                    //need to call the function here
                     let newPost = newPostDom(data.data.post);
+                    //now append to the list id
                     $('#posts-list-container>ul').prepend(newPost);
+                    //need to call the delete post
                     deletePost($(' .delete-post-button', newPost));
 
               
@@ -40,7 +47,11 @@
 
 
     // method to create a post in DOM
+    //  this function will help in converting the _post.ejs html into the html text
     let newPostDom = function(post){
+        //post coming from the post_controller ajax call
+
+		//CHANGE:show the count of the zero likes on this post
         return $(`<li id="post-${post._id}">
                     <p>
                         
@@ -83,16 +94,18 @@
                 </li>`)
     }
 
-
+//  Delete a Post form the DOM..
     // method to delete a post from DOM
     let deletePost = function(deleteLink){
+        //call the del link class using jQuery or jsDOM
         $(deleteLink).click(function(e){
-            e.preventDefault();
+            e.preventDefault(); //so that page won't load again and again
 
             $.ajax({
                 type: 'get',
-                url: $(deleteLink).prop('href'),
+                url: $(deleteLink).prop('href'), //this is how you get value of the href
                 success: function(data){
+                    //this will remove the post
                     $(`#post-${data.data.post_id}`).remove();
                     new Noty({
                         theme: 'relax',
@@ -116,6 +129,9 @@
 
     // loop over all the existing posts on the page (when the window loads for the first time) and call the delete post method on delete link of each, also add AJAX (using the class we've created) to the delete button of each
     let convertPostsToAjax = function(){
+        // the $().each() method is a convenient way to iterate
+		//over a collection of elements in jQuery and perform a
+		//function for each element.
         $('#posts-list-container>ul>li').each(function(){
             let self = $(this);
             let deleteButton = $(' .delete-post-button', self);
